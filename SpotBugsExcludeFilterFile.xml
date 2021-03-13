@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <Match>
+        <Or>
+            <Package name="uk.me.conradscott.deckle.antlr4"/>
+
+            <!-- The following rules are all from fb-contrib. -->
+
+            <!-- This proposes inverting the logic of a conditional, -->
+            <!-- but this easily conflicts with having the successful return as the final `return` of a function. -->
+            <Bug pattern="BL_BURYING_LOGIC"/>
+
+            <!-- "This method accesses an array or list using a constant integer index." -->
+            <!-- Yes, sometimes I might have forgotten to use an index variables, but that's not the only way to access an array. -->
+            <Bug pattern="CLI_CONSTANT_LIST_INDEX"/>
+
+            <!-- This prevents an arbitrary function converting a checked exception to an unchecked exception. -->
+            <!-- It even fires when the method *is* implementing an interface that doesn't allow checked exceptions. -->
+            <!-- But even without that, it would prevent using a helper function to do such conversions. -->
+            <Bug pattern="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS"/>
+
+            <!-- This prevents a root class having static constructors that create instances of derived classes. -->
+            <Bug pattern="FCCD_FIND_CLASS_CIRCULAR_DEPENDENCY"/>
+
+            <!-- I should probably try to understand Java serialization one day. -->
+            <Bug pattern="IMC_IMMATURE_CLASS_BAD_SERIALVERSIONUID"/>
+
+            <!-- Don't put string literals first (which just hides the problem), do use a null checker. -->
+            <Bug pattern="LSC_LITERAL_STRING_COMPARISON"/>
+
+            <Bug pattern="MOM_MISLEADING_OVERLOAD_MODEL"/>
+
+            <!-- This clashes with IntelliJ's generated hashCode() methods, amongst other things. -->
+            <Bug pattern="USBR_UNNECESSARY_STORE_BEFORE_RETURN"/>
+        </Or>
+    </Match>
+</FindBugsFilter>
