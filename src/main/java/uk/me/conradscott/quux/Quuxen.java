@@ -242,19 +242,19 @@ public abstract class Quuxen<@ImmutableTypeParameter Q>
         }
 
         @Override
-        public Invalid<Q>withInvalidQuuxen(final Invalid<Q>invalid)
+        public Invalid<Q> withInvalidQuuxen(final Invalid<Q> invalid)
         {
             return withQuuxen(invalid);
         }
 
         @Override
-        public Invalid<Q>withValidQuuxen(final Valid<Q>valid)
+        public Invalid<Q> withValidQuuxen(final Valid<Q> valid)
         {
             return withQuuxen(valid);
         }
 
         @Override
-        public Invalid<Q>withQuuxes(final RichIterable<? extends Quux<Q>> quuxes)
+        public Invalid<Q> withQuuxes(final RichIterable<? extends Quux<Q>> quuxes)
         {
             if (quuxes.isEmpty()) {
                 return this;
@@ -281,7 +281,7 @@ public abstract class Quuxen<@ImmutableTypeParameter Q>
         }
 
         @Override
-        public Invalid<Q>flatMap(final Supplier<? extends Quuxen<Q>> supplier)
+        public Invalid<Q> flatMap(final Supplier<? extends Quuxen<Q>> supplier)
         {
             return this;
         }
@@ -339,13 +339,13 @@ public abstract class Quuxen<@ImmutableTypeParameter Q>
         }
 
         @Override
-        public Invalid<Q>withInvalidQuux(final Quux.Invalid<Q> invalid)
+        public Invalid<Q> withInvalidQuux(final Quux.Invalid<Q> invalid)
         {
             return new Invalid<>(quuxes.newWith(invalid));
         }
 
         @Override
-        public Valid<Q>withValidQuux(final Quux.Valid<Q> valid)
+        public Valid<Q> withValidQuux(final Quux.Valid<Q> valid)
         {
             return new Valid<>(quuxes.newWith(valid));
         }
@@ -357,13 +357,13 @@ public abstract class Quuxen<@ImmutableTypeParameter Q>
         }
 
         @Override
-        public Invalid<Q>withInvalidQuuxen(final Invalid<Q>invalid)
+        public Invalid<Q> withInvalidQuuxen(final Invalid<Q> invalid)
         {
             return new Invalid<>(quuxes.newWithAll(invalid.getQuuxes()));
         }
 
         @Override
-        public Valid<Q>withValidQuuxen(final Valid<Q>valid)
+        public Valid<Q> withValidQuuxen(final Valid<Q> valid)
         {
             return new Valid<>(quuxes.newWithAll(valid.quuxes));
         }
@@ -413,8 +413,8 @@ public abstract class Quuxen<@ImmutableTypeParameter Q>
         public <T> QuuxItem<Q, T> mapToQuuxItem(final Supplier<? extends QuuxItem<Q, T>> supplier)
         {
             return supplier.get()
-                           .fold(invalid-> new QuuxItem.Invalid<>(withInvalidQuuxen(invalid.getQuuxen())),
-                                 valid-> new QuuxItem.Valid<>(withValidQuuxen(valid.getQuuxen()),
+                           .fold(invalid -> new QuuxItem.Invalid<>(withInvalidQuuxen(invalid.getQuuxen())),
+                                 valid -> new QuuxItem.Valid<>(withValidQuuxen(valid.getQuuxen()),
                                                                valid.getItem()));
         }
     }
