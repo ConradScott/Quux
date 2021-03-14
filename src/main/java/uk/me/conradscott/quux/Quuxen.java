@@ -380,6 +380,14 @@ public abstract class Quuxen<@ImmutableTypeParameter Q>
         @Override
         public Valid<Q> withValidQuuxen(final Valid<Q> valid)
         {
+            if (quuxes.isEmpty()) {
+                return valid;
+            }
+
+            if (valid.isEmpty()) {
+                return this;
+            }
+
             return new Valid<>(quuxes.newWithAll(valid.quuxes));
         }
 

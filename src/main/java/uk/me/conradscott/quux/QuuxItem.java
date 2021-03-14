@@ -254,7 +254,7 @@ public abstract class QuuxItem<@ImmutableTypeParameter Q, T>
         @Override
         public Invalid<Q, T> withQuuxens(final RichIterable<? extends Quuxen<Q>> quuxens)
         {
-            if (quuxen.isEmpty()) {
+            if (quuxens.isEmpty() || quuxens.allSatisfy(Quuxen::isEmpty)) {
                 return this;
             }
 
@@ -472,6 +472,10 @@ public abstract class QuuxItem<@ImmutableTypeParameter Q, T>
         @Override
         public Valid<Q, T> withValidQuuxen(final Quuxen.Valid<Q> valid)
         {
+            if (valid.isEmpty()) {
+                return this;
+            }
+
             return new Valid<>(quuxen.withValidQuuxen(valid), item);
         }
 
@@ -488,7 +492,7 @@ public abstract class QuuxItem<@ImmutableTypeParameter Q, T>
         @Override
         public QuuxItem<Q, T> withQuuxens(final RichIterable<? extends Quuxen<Q>> quuxens)
         {
-            if (quuxens.allSatisfy(Quuxen::isEmpty)) {
+            if (quuxens.isEmpty() || quuxens.allSatisfy(Quuxen::isEmpty)) {
                 return this;
             }
 
