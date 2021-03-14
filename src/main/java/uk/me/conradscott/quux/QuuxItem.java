@@ -258,7 +258,7 @@ public abstract class QuuxItem<@ImmutableTypeParameter Q, T>
                 return this;
             }
 
-            return new Invalid<>(quuxen.withQuuxen(quuxen));
+            return new Invalid<>(quuxen.withQuuxens(quuxens));
         }
 
         @Override

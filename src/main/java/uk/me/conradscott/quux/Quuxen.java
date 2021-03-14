@@ -128,52 +128,18 @@ public abstract class Quuxen<@ImmutableTypeParameter Q>
 
     public abstract Quuxen<Q> withQuuxes(RichIterable<? extends Quux<Q>> quuxes);
 
-    @SafeVarargs
-    @SuppressWarnings("varargs")
-    public final Quuxen<Q> withQuuxes(final Quux<Q>... quuxes)
-    {
-        return withQuuxes(Lists.immutable.of(quuxes));
-    }
+    @SuppressWarnings({ "varargs", "unchecked" })
+    public abstract Quuxen<Q> withQuuxes(final Quux<Q>... quuxes);
 
-    public final Quuxen<Q> withQuuxens(final RichIterable<? extends Quuxen<Q>> quuxens)
-    {
-        if (quuxens.allSatisfy(Quuxen::isEmpty)) {
-            return this;
-        }
+    public abstract Quuxen<Q> withQuuxens(final RichIterable<? extends Quuxen<Q>> quuxens);
 
-        final MutableList<Quux<Q>> quuxes = Lists.mutable.empty();
+    @SuppressWarnings({ "varargs", "unchecked" })
+    public abstract Quuxen<Q> withQuuxens(final Quuxen<Q>... quuxens);
 
-        quuxens.forEach(quuxen -> quuxes.addAllIterable(quuxen.getQuuxes()));
+    public abstract Quuxen<Q> withQuuxItems(final RichIterable<? extends QuuxItem<Q, ?>> items);
 
-        return withQuuxes(quuxes);
-    }
-
-    @SafeVarargs
-    @SuppressWarnings("varargs")
-    public final Quuxen<Q> withQuuxens(final Quuxen<Q>... quuxens)
-    {
-        return withQuuxens(Lists.immutable.of(quuxens));
-    }
-
-    public final Quuxen<Q> withQuuxItems(final RichIterable<? extends QuuxItem<Q, ?>> items)
-    {
-        if (items.isEmpty()) {
-            return this;
-        }
-
-        final MutableList<Quux<Q>> quuxes = Lists.mutable.empty();
-
-        items.forEach(item -> quuxes.addAllIterable(item.getQuuxes()));
-
-        return withQuuxes(quuxes);
-    }
-
-    @SafeVarargs
-    @SuppressWarnings("varargs")
-    public final Quuxen<Q> withQuuxItems(final QuuxItem<Q, ?>... items)
-    {
-        return withQuuxItems(Lists.immutable.of(items));
-    }
+    @SuppressWarnings({ "varargs", "unchecked" })
+    public abstract Quuxen<Q> withQuuxItems(final QuuxItem<Q, ?>... items);
 
     public abstract void ifInvalid(Consumer<? super Invalid<Q>> action);
 
@@ -266,6 +232,50 @@ public abstract class Quuxen<@ImmutableTypeParameter Q>
             }
 
             return new Invalid<>(this.quuxes.newWithAll(quuxes));
+        }
+
+        @Override
+        @SafeVarargs
+        @SuppressWarnings("varargs")
+        public final Invalid<Q> withQuuxes(final Quux<Q>... quuxes)
+        {
+            return withQuuxes(Lists.immutable.of(quuxes));
+        }
+
+        @Override
+        public Invalid<Q> withQuuxens(final RichIterable<? extends Quuxen<Q>> quuxens)
+        {
+            if (quuxens.allSatisfy(Quuxen::isEmpty)) {
+                return this;
+            }
+
+            return withQuuxes(flattenQuuxens(quuxens));
+        }
+
+        @Override
+        @SafeVarargs
+        @SuppressWarnings("varargs")
+        public final Invalid<Q> withQuuxens(final Quuxen<Q>... quuxens)
+        {
+            return withQuuxens(Lists.immutable.of(quuxens));
+        }
+
+        @Override
+        public Invalid<Q> withQuuxItems(final RichIterable<? extends QuuxItem<Q, ?>> items)
+        {
+            if (items.isEmpty()) {
+                return this;
+            }
+
+            return withQuuxes(flattenQuuxItems(items));
+        }
+
+        @Override
+        @SafeVarargs
+        @SuppressWarnings("varargs")
+        public final Invalid<Q> withQuuxItems(final QuuxItem<Q, ?>... items)
+        {
+            return withQuuxItems(Lists.immutable.of(items));
         }
 
         @Override
@@ -386,6 +396,50 @@ public abstract class Quuxen<@ImmutableTypeParameter Q>
         }
 
         @Override
+        @SafeVarargs
+        @SuppressWarnings("varargs")
+        public final Quuxen<Q> withQuuxes(final Quux<Q>... quuxes)
+        {
+            return withQuuxes(Lists.immutable.of(quuxes));
+        }
+
+        @Override
+        public Quuxen<Q> withQuuxens(final RichIterable<? extends Quuxen<Q>> quuxens)
+        {
+            if (quuxens.allSatisfy(Quuxen::isEmpty)) {
+                return this;
+            }
+
+            return withQuuxes(flattenQuuxens(quuxens));
+        }
+
+        @Override
+        @SafeVarargs
+        @SuppressWarnings("varargs")
+        public final Quuxen<Q> withQuuxens(final Quuxen<Q>... quuxens)
+        {
+            return withQuuxens(Lists.immutable.of(quuxens));
+        }
+
+        @Override
+        public Quuxen<Q> withQuuxItems(final RichIterable<? extends QuuxItem<Q, ?>> items)
+        {
+            if (items.isEmpty()) {
+                return this;
+            }
+
+            return withQuuxes(flattenQuuxItems(items));
+        }
+
+        @Override
+        @SafeVarargs
+        @SuppressWarnings("varargs")
+        public final Quuxen<Q> withQuuxItems(final QuuxItem<Q, ?>... items)
+        {
+            return withQuuxItems(Lists.immutable.of(items));
+        }
+
+        @Override
         public void ifInvalid(final Consumer<? super Invalid<Q>> action)
         { }
 
@@ -422,5 +476,23 @@ public abstract class Quuxen<@ImmutableTypeParameter Q>
                                  valid -> new QuuxItem.Valid<>(withValidQuuxen(valid.getQuuxen()),
                                                                valid.getItem()));
         }
+    }
+
+    private static <Q> RichIterable<Quux<Q>> flattenQuuxens(final RichIterable<? extends Quuxen<Q>> quuxens)
+    {
+        final MutableList<Quux<Q>> quuxes = Lists.mutable.empty();
+
+        quuxens.forEach(quuxen -> quuxes.addAllIterable(quuxen.getQuuxes()));
+
+        return quuxes;
+    }
+
+    private static <Q> RichIterable<Quux<Q>> flattenQuuxItems(final RichIterable<? extends QuuxItem<Q, ?>> items)
+    {
+        final MutableList<Quux<Q>> quuxes = Lists.mutable.empty();
+
+        items.forEach(item -> quuxes.addAllIterable(item.getQuuxes()));
+
+        return quuxes;
     }
 }
