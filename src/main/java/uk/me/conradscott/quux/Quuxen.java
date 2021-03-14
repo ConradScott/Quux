@@ -99,6 +99,11 @@ public abstract class Quuxen<@ImmutableTypeParameter Q>
 
     public abstract boolean isEmpty();
 
+    public boolean notEmpty()
+    {
+        return !isEmpty();
+    }
+
     public boolean isInvalid()
     {
         return !isValid();
