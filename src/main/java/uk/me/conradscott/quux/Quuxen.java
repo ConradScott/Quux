@@ -33,12 +33,12 @@ public abstract class Quuxen<@ImmutableTypeParameter Q>
         return quux.fold(Quuxen::ofInvalidQuux, Quuxen::ofValidQuux);
     }
 
-    public static <@ImmutableTypeParameter Q> Quuxen<Q> ofInvalidQuux(final Quux.Invalid<Q> invalid)
+    public static <@ImmutableTypeParameter Q> Invalid<Q> ofInvalidQuux(final Quux.Invalid<Q> invalid)
     {
         return new Invalid<>(Lists.immutable.of(invalid));
     }
 
-    public static <@ImmutableTypeParameter Q> Quuxen<Q> ofValidQuux(final Quux.Valid<Q> valid)
+    public static <@ImmutableTypeParameter Q> Valid<Q> ofValidQuux(final Quux.Valid<Q> valid)
     {
         return new Valid<>(Lists.immutable.of(valid));
     }
@@ -116,13 +116,13 @@ public abstract class Quuxen<@ImmutableTypeParameter Q>
 
     public abstract Quuxen<Q> withQuux(Quux<Q> quux);
 
-    public abstract Quuxen<Q> withInvalidQuux(Quux.Invalid<Q> invalid);
+    public abstract Invalid<Q> withInvalidQuux(Quux.Invalid<Q> invalid);
 
     public abstract Quuxen<Q> withValidQuux(Quux.Valid<Q> valid);
 
     public abstract Quuxen<Q> withQuuxen(Quuxen<Q> quuxen);
 
-    public abstract Quuxen<Q> withInvalidQuuxen(Invalid<Q> invalid);
+    public abstract Invalid<Q> withInvalidQuuxen(Invalid<Q> invalid);
 
     public abstract Quuxen<Q> withValidQuuxen(Valid<Q> valid);
 
