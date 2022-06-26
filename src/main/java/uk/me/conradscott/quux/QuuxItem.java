@@ -38,6 +38,13 @@ public abstract class QuuxItem<@ImmutableTypeParameter Q, T>
         return new Invalid<>(new Quuxen.Invalid<>(Lists.immutable.of(invalid)));
     }
 
+    @SafeVarargs
+    @SuppressWarnings("varargs")
+    public static <@ImmutableTypeParameter Q, T> Invalid<Q, T> ofInvalidQuuxes(final Quux.Invalid<Q>... invalids)
+    {
+        return new Invalid<>(new Quuxen.Invalid<>(Lists.immutable.of(invalids)));
+    }
+
     public static <@ImmutableTypeParameter Q, T> Invalid<Q, T> ofInvalidQuuxen(final Quuxen.Invalid<Q> quuxen)
     {
         return new Invalid<>(quuxen);
